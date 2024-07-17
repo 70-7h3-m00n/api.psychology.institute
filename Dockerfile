@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y \
     libvips-dev \
     git && \
     rm -rf /var/lib/apt/lists/*
+    
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/
-COPY ./package.json ./
+COPY ./package.json ./package-lock.json ./
 ENV PATH /opt/node_modules/.bin:$PATH
 RUN npm config set fetch-retry-maxtimeout 600000 -g && npm install
 WORKDIR /opt/app
