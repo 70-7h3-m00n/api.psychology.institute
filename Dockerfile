@@ -9,7 +9,7 @@ ENV PATH /opt/node_modules/.bin:$PATH
 RUN npm config set fetch-retry-maxtimeout 600000 -g && npm install
 WORKDIR /opt/app
 COPY ./ .
-RUN npm build
+RUN npm run build
 
 FROM node:18.17-alpine
 RUN apk add vips-dev
