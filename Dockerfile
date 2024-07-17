@@ -6,10 +6,10 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/
 COPY ./package.json ./
 ENV PATH /opt/node_modules/.bin:$PATH
-RUN yarn config set network-timeout 600000 -g && yarn install
+RUN npm config set network-timeout 600000 -g && npm install
 WORKDIR /opt/app
 COPY ./ .
-RUN yarn build
+RUN npm build
 
 FROM node:14-alpine
 RUN apk add vips-dev
@@ -21,4 +21,4 @@ COPY --from=build /opt/node_modules ./node_modules
 ENV PATH /opt/node_modules/.bin:$PATH
 COPY --from=build /opt/app ./
 
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
