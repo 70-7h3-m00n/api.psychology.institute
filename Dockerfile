@@ -1,6 +1,15 @@
 FROM node:20 as build
-# Installing libvips-dev for sharp Compatibility
-RUN apk update && apk add build-base gcc autoconf automake zlib-dev libpng-dev vips-dev git && rm -rf /var/cache/apk/* > /dev/null 2>&1
+# Installing dependencies for sharp Compatibility
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    autoconf \
+    automake \
+    zlib1g-dev \
+    libpng-dev \
+    libvips-dev \
+    git && \
+    rm -rf /var/lib/apt/lists/*
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/
@@ -12,8 +21,7 @@ COPY ./ .
 RUN npm run build
 
 FROM node:20
-RUN apk add vips-dev
-RUN rm -rf /var/cache/apk/*
+RUN apt-get update && apt-get install -y libvips-dev && rm -rf /var/lib/apt/lists/*
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
